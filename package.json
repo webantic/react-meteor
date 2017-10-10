@@ -1,6 +1,6 @@
 {
-  "name": "react-web-meteor",
-  "version": "0.2.3",
+  "name": "@webantic/react-web-meteor",
+  "version": "0.2.4",
   "description": "Meteor Reactivity for your React application",
   "main": "index.js",
   "scripts": {
@@ -8,6 +8,7 @@
     "test": "mocha --compilers js:babel-core/register --require test/setup --recursive"
   },
   "dependencies": {
+    "@webantic/minimongo-cache": "0.0.50",
     "base-64": "^0.1.0",
     "crypto-js": "^3.1.6",
     "ejson": "^2.1.2",
