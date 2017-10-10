@@ -1,5 +1,5 @@
 // import ReactNative from 'react-native';
-import minimongo from 'minimongo-cache';
+import minimongo from '@webantic/minimongo-cache';
 import Trackr from 'trackr';
 // import { InteractionManager } from 'react-native';
 process.nextTick = setImmediate;
