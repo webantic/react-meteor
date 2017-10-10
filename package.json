@@ -1,8 +1,8 @@
 {
   "name": "@webantic/react-web-meteor",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "Meteor Reactivity for your React application",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "rimraf dist && babel index.js -d dist && babel src -d dist/src && babel lib -d dist/lib && cp package.json LICENSE README.md dist",
     "test": "mocha --compilers js:babel-core/register --require test/setup --recursive"
