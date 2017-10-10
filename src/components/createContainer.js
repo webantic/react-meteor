@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-
+import createReactClass from 'create-react-class'
 import Mixin from './Mixin';
 
 export default function createContainer(options = {}, Component) {
@@ -18,14 +18,14 @@ export default function createContainer(options = {}, Component) {
     getMeteorData
   } = expandedOptions;
 
-  return class extends React.Component {
-    displayName = 'MeteorDataContainer'
-    mixins = [Mixin]
+  return createReactClass({
+    displayName: 'MeteorDataContainer',
+    mixins: [Mixin],
     getMeteorData() {
       return getMeteorData(this.props);
-    }
+    },
     render() {
       return <Component {...this.props} {...this.data} />;
     }
-  };
+  });
 }
