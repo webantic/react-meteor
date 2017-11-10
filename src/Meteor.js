@@ -223,7 +223,7 @@ module.exports = {
       // New sub! Generate an id, save it locally, and send message.
 
       id = Random.id();
-      const subIdRemember = Data.ddp.sub(name, params);
+      const subIdRemember = Data.ddp.sub(name, params, id);
 
       Data.subscriptions[id] = {
         id: id,
