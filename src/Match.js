@@ -1,4 +1,5 @@
 import Meteor, { EJSON } from './Meteor'
+import { makeErrorType } from './Errors'
 
 var nextSlot = 0
 Meteor.EnvironmentVariable = function () {
@@ -62,7 +63,7 @@ export const Match = {
   Integer: ['__integer__'],
 
   // XXX matchers should know how to describe themselves for errors
-  Error: Meteor.makeErrorType('Match.Error', function (msg) {
+  Error: makeErrorType('Match.Error', function (msg) {
     this.message = 'Match error: ' + msg
     // The path of the value that failed to match. Initially empty, this gets
     // populated by catching and rethrowing the exception as it goes back up the

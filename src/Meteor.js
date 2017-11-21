@@ -80,6 +80,8 @@ module.exports = {
       ...options
     })
 
+    // Data.ddp.sub('meteor.loginServiceConfiguration')
+
     // NetInfo.isConnected.addEventListener('change', isConnected=>{
     //   if(isConnected && Data.ddp.autoReconnect) {
     //     Data.ddp.connect();
