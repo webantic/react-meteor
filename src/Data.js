@@ -16,6 +16,7 @@ function runAfterOtherComputations(fn){
   // });
 }
 
+let waitsForDdp = 0
 export default {
   _endpoint: null,
   _options: null,
@@ -32,8 +33,17 @@ export default {
     if(this.ddp) {
       cb();
     } else {
+      waitsForDdp++
       runAfterOtherComputations(()=>{
-        this.waitDdpReady(cb);
+        if (waitsForDdp > 10) {
+          console.log('Waiting a long time for DDP, slowing down a bit...')
+          setTimeout(() => {
+            this.waitDdpReady(cb)
+          }, 5000)
+        }
+        else {
+          this.waitDdpReady(cb);
+        }
       });
     }
   },
