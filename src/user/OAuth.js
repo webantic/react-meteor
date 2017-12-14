@@ -1,8 +1,10 @@
+/* globals cordova */
 import Meteor from '../Meteor'
 import Base64 from '../Base64'
 import * as URL from '../URL'
 import _ from 'underscore'
 import { check } from '../Match'
+import { isCordova } from '../helpers/index'
 
 // credentialToken -> credentialSecret. You must provide both the
 // credentialToken and the credentialSecret to retrieve an access token from
@@ -105,7 +107,9 @@ export const _stateParam = function (loginStyle, credentialToken, redirectUrl, s
     redirectUrl: URL.absoluteUrl(`/_oauth/${serviceName}`)
   }
 
-  if (loginStyle === 'redirect') { state.redirectUrl = redirectUrl || ('' + window.location) }
+  if (loginStyle === 'redirect') {
+    state.redirectUrl = redirectUrl || ('' + window.location)
+  }
 
   // Encode base64 as not all login services URI-encode the state
   // parameter when they pass it back to us.
@@ -166,13 +170,20 @@ export const getDataAfterRedirect = function () {
 //
 export const launchLogin = function (options) {
   if (!options.loginService) { throw new Error('loginService required') }
+
   if (options.loginStyle === 'popup') {
+    if (isCordova()) {
+      return cordova.InAppBrowser.open(options.loginUrl, '_blank')
+    }
+
+    // leave this as a fallback
     showPopup(
       options.loginUrl,
       _.bind(options.credentialRequestCompleteCallback, null, options.credentialToken),
       options.popupOptions)
   } else if (options.loginStyle === 'redirect') {
     saveDataForRedirect(options.loginService, options.credentialToken)
+
     window.location = options.loginUrl
   } else {
     throw new Error('invalid login style')
