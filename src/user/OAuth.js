@@ -5,6 +5,7 @@ import * as URL from '../URL'
 import _ from 'underscore'
 import { check } from '../Match'
 import { isCordova } from '../helpers/index'
+import User from '../user/User'
 
 // credentialToken -> credentialSecret. You must provide both the
 // credentialToken and the credentialSecret to retrieve an access token from
@@ -99,12 +100,13 @@ export const _loginStyle = function (service, config, options) {
   return loginStyle
 }
 
-export const _stateParam = function (loginStyle, credentialToken, redirectUrl, serviceName) {
+export const _stateParam = function (loginStyle, credentialToken, redirectUrl, frontendUrl, serviceName) {
   var state = {
     loginStyle: loginStyle,
     credentialToken: credentialToken,
-    isCordova: Meteor.isCordova,
-    redirectUrl: URL.absoluteUrl(`/_oauth/${serviceName}`)
+    isCordova: isCordova(),
+    redirectUrl: redirectUrl || URL.absoluteUrl(`/_oauth/${serviceName}`),
+    frontendUrl: URL.absoluteUrl(`/_oauth/${serviceName}`)
   }
 
   if (loginStyle === 'redirect') {
@@ -172,11 +174,28 @@ export const launchLogin = function (options) {
   if (!options.loginService) { throw new Error('loginService required') }
 
   if (options.loginStyle === 'popup') {
+    const { credentialRequestCompleteCallback } = options
+
     if (isCordova()) {
-      return cordova.InAppBrowser.open(options.loginUrl, '_blank')
+      const inAppBrowser = cordova.InAppBrowser.open(options.loginUrl, '_blank')
+
+      ;(function poll (browser) {
+        browser.executeScript({code: ';(()=>window._fbOAuthConfig)()'}, (config) => {
+          if (config[0]) {
+            const { credentialToken, credentialSecret } = config[0]
+
+            browser.close()
+            credentialRequestCompleteCallback({ credentialToken, credentialSecret })
+          } else {
+            setTimeout(poll, 100, browser)
+          }
+        })
+      })(inAppBrowser)
+
+      return
     }
 
-    // leave this as a fallback
+    // left this in as a fallback
     showPopup(
       options.loginUrl,
       _.bind(options.credentialRequestCompleteCallback, null, options.credentialToken),
@@ -240,6 +259,10 @@ export const _redirectUri = function (serviceName, config, params, absoluteUrlOp
     if (_.isEmpty(params)) {
       params = undefined
     }
+  }
+
+  if (config.redirectUrl) {
+    return config.redirectUrl
   }
 
   return URL._constructUrl(

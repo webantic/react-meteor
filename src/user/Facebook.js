@@ -30,9 +30,9 @@ export const requestCredential = function (options, credentialRequestCompleteCal
 
   var loginUrl =
         'https://www.facebook.com/v2.9/dialog/oauth?client_id=' + config.appId +
-        '&redirect_uri=' + OAuth._redirectUri('facebook', config) +
+        '&redirect_uri=' + OAuth._redirectUri('facebook', {...config, ...options}) +
         '&display=' + display + '&scope=' + scope +
-        '&state=' + OAuth._stateParam(loginStyle, credentialToken, options && options.redirectUrl, 'facebook')
+        '&state=' + OAuth._stateParam(loginStyle, credentialToken, options.redirectUrl, 'facebook')
 
   // Handle authentication type (e.g. for force login you need auth_type: "reauthenticate")
   if (options && options.auth_type) {

@@ -7,7 +7,7 @@ import * as Facebook from './Facebook'
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken'
 
-module.exports = {
+const exportMap = {
   user () {
     if (!this._userIdSaved) return null
 
@@ -53,8 +53,8 @@ module.exports = {
       typeof callback === 'function' && callback(err)
     })
   },
-  loginWithFacebook (callback) {
-    Facebook.requestCredential({}, callback)
+  loginWithFacebook (options, callback) {
+    Facebook.requestCredential(options, callback)
   },
   loginWithOAuth (credentialToken, credentialSecret, callback) {
     this._login({oauth: {
@@ -75,7 +75,7 @@ module.exports = {
   },
   _login (user, callback) {
     this._startLoggingIn()
-    this.call('login', user, (err, result) => {
+    call('login', user, (err, result) => {
       this._endLoggingIn()
 
       this._handleLoginCallback(err, result)
@@ -129,3 +129,6 @@ module.exports = {
     }
   }
 }
+
+module.exports = exportMap
+export default exportMap
