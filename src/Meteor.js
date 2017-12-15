@@ -32,16 +32,16 @@ module.exports = {
   Collection,
   makeErrorType,
   _inherits,
-  collection (name, options) { return new Collection(name, options) },
+  collection(name, options) { return new Collection(name, options) },
   createContainer,
-  getData () {
+  getData() {
     return Data
   },
-  connectMeteor (reactClass) {
+  connectMeteor(reactClass) {
     return reactMixin.onClass(reactClass, Mixin)
   },
   ...User,
-  status () {
+  status() {
     return {
       connected: Data.ddp ? Data.ddp.status == 'connected' : false,
       status: Data.ddp ? Data.ddp.status : 'disconnected'
@@ -51,12 +51,12 @@ module.exports = {
     }
   },
   call: call,
-  disconnect () {
+  disconnect() {
     if (Data.ddp) {
       Data.ddp.disconnect()
     }
   },
-  _subscriptionsRestart () {
+  _subscriptionsRestart() {
     for (var i in Data.subscriptions) {
       const sub = Data.subscriptions[i]
       Data.ddp.unsub(sub.subIdRemember)
@@ -64,10 +64,10 @@ module.exports = {
     }
   },
   waitDdpConnected: Data.waitDdpConnected.bind(Data),
-  reconnect () {
+  reconnect() {
     Data.ddp && Data.ddp.connect()
   },
-  connect (endpoint, options) {
+  connect(endpoint, options) {
     if (!endpoint) endpoint = Data._endpoint
     if (!options) options = Data._options
 
@@ -120,7 +120,7 @@ module.exports = {
       if (!Data.db[message.collection]) {
         Data.db.addCollection(message.collection)
       }
-      Data.db[message.collection].upsert({_id: message.id, ...message.fields})
+      Data.db[message.collection].upsert({ _id: message.id, ...message.fields })
     })
 
     Data.ddp.on('ready', message => {
@@ -141,7 +141,7 @@ module.exports = {
     })
 
     Data.ddp.on('changed', message => {
-      Data.db[message.collection] && Data.db[message.collection].upsert({_id: message.id, ...message.fields})
+      Data.db[message.collection] && Data.db[message.collection].upsert({ _id: message.id, ...message.fields })
     })
 
     Data.ddp.on('removed', message => {
@@ -154,6 +154,9 @@ module.exports = {
     })
 
     Data.ddp.on('nosub', message => {
+      if (message.error) {
+        console.error(message.error)
+      }
       for (var i in Data.subscriptions) {
         const sub = Data.subscriptions[i]
         if (sub.subIdRemember == message.id) {
@@ -162,7 +165,7 @@ module.exports = {
       }
     })
   },
-  subscribe (name) {
+  subscribe(name) {
     var params = Array.prototype.slice.call(arguments, 1)
     var callbacks = {}
     if (params.length) {
