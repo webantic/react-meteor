@@ -103,14 +103,17 @@ const exportMap = {
     }
     Data.notify('change')
   },
-  _loginWithToken (value) {
+  async _loginWithToken (value) {
     Data._tokenIdSaved = value
     if (value !== null) {
       this._startLoggingIn()
-      call('login', { resume: value }, (err, result) => {
+      try {
+        const result = await call('login', { resume: value })
         this._endLoggingIn()
-        this._handleLoginCallback(err, result)
-      })
+        this._handleLoginCallback(null, result)
+      } catch (e) {
+        this._handleLoginCallback(e, null)
+      }
     } else {
       this._endLoggingIn()
     }
@@ -118,14 +121,17 @@ const exportMap = {
   getAuthToken () {
     return Data._tokenIdSaved
   },
+  getSavedToken () {
+    return localStorage.getItem(TOKEN_KEY)
+  },
   async _loadInitialUser () {
     var value = null
     try {
-      value = localStorage.getItem(TOKEN_KEY)
+      value = this.getSavedToken()
     } catch (error) {
       console.warn('localStorage error: ' + error.message)
     } finally {
-      this._loginWithToken(value)
+      await this._loginWithToken(value)
     }
   }
 }
