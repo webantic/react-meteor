@@ -159,8 +159,8 @@ module.exports = {
       }
       for (var i in Data.subscriptions) {
         const sub = Data.subscriptions[i]
-        if (sub.subIdRemember == message.id) {
-          console.warn('No subscription existing for', sub.name)
+        if (!message.error && sub.subIdRemember == message.id) {
+          console.error('Subscription error', message)
         }
       }
     })
