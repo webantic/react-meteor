@@ -27,6 +27,7 @@ const exportMap = {
     call('logout', err => {
       this.handleLogout()
       this.connect()
+      Data.notify('onLogout')
 
       typeof callback === 'function' && callback(err)
     })
