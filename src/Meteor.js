@@ -22,6 +22,8 @@ import Accounts from './user/Accounts'
 import { makeErrorType } from './Errors'
 import { _inherits } from './helpers'
 
+let ddpReadyCallbacks = []
+
 module.exports = {
   composeWithTracker,
   Accounts,
@@ -58,14 +60,19 @@ module.exports = {
   },
   _subscriptionsRestart() {
     for (var i in Data.subscriptions) {
-      const sub = Data.subscriptions[i]
-      Data.ddp.unsub(sub.subIdRemember)
-      sub.subIdRemember = Data.ddp.sub(sub.name, sub.params)
+      // const sub = Data.subscriptions[i]
+      // Data.ddp.unsub(sub.subIdRemember)
+      // sub.subIdRemember = Data.ddp.sub(sub.name, sub.params)
     }
   },
   waitDdpConnected: Data.waitDdpConnected.bind(Data),
   reconnect() {
     Data.ddp && Data.ddp.connect()
+  },
+  on(event, cb) {
+    if (event === 'ddp') {
+      ddpReadyCallbacks.push(cb)
+    }
   },
   connect(endpoint, options) {
     if (!endpoint) endpoint = Data._endpoint
@@ -79,6 +86,7 @@ module.exports = {
       SocketConstructor: WebSocket,
       ...options
     })
+    ddpReadyCallbacks.forEach(cb => cb(this.ddp))
 
     // Data.ddp.sub('meteor.loginServiceConfiguration')
 
