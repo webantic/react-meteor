@@ -54,6 +54,19 @@ export class Upload {
   }
 
   /**
+   * Will call the passed function reactively with current upload progress
+   * @param {*} handler
+   */
+  registerProgressHandler (handler) {
+    this._progressHandler = handler
+    // Tracker.autorun(() => {
+    //   this.loaded.get()
+
+    //   handler(this.progress())
+    // })
+  }
+
+  /**
    * @returns {number}
    */
   progress () {
@@ -164,6 +177,10 @@ export class Upload {
         if (event.lengthComputable) {
           self.loaded.set(event.loaded)
           self.total.set(event.total)
+
+          if (self._progressHandler && typeof self._progressHandler === 'function') {
+            self._progressHandler(self.progress())
+          }
         }
       }, false)
 
@@ -175,6 +192,7 @@ export class Upload {
         if (xhr.status < 400) {
           self.status.set('done')
           self.loaded.set(self.total.get())
+
           resolve(self.instructions.download)
         } else {
           self.status.set('failed')

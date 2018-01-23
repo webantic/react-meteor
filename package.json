@@ -1,6 +1,6 @@
 {
   "name": "@webantic/react-web-meteor",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "Meteor Reactivity for your React application",
   "main": "dist/index.js",
   "scripts": {
@@ -28,6 +28,12 @@
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
     "chai": "^3.5.0",
+    "eslint": "^4.16.0",
+    "eslint-config-standard": "^11.0.0-beta.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
     "mocha": "^2.4.5",
     "mock-socket": "^2.0.0",
     "rimraf": "^2.6.1",
