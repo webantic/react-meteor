@@ -1,6 +1,6 @@
 {
   "name": "@webantic/react-web-meteor",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "Meteor Reactivity for your React application",
   "main": "dist/index.js",
   "scripts": {
