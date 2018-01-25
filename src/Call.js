@@ -27,6 +27,6 @@ export default async function(eventName) {
 
   return new Promise((_resolve, _reject) => {
     resolve = _resolve
-    reject - _reject
+    reject = _reject
   })
 }
