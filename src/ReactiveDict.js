@@ -1,4 +1,4 @@
-import EJSON from 'ejson';
+import EJSON from "@webantic/ejson";
 
 import Data from './Data';
 

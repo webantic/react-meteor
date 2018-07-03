@@ -1,5 +1,5 @@
 import Trackr from 'trackr';
-import EJSON from 'ejson';
+import EJSON from "@webantic/ejson";
 import Data from '../Data';
 
 export default {

@@ -1,7 +1,7 @@
 
 import reactMixin from 'react-mixin'
 import Trackr from 'trackr'
-import EJSON from 'ejson'
+import EJSON from "@webantic/ejson";
 import DDP from '../lib/ddp.js'
 import Random from '../lib/Random'
 import ReactiveVar from './ReactiveVar'

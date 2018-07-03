@@ -1,5 +1,5 @@
 import Tracker from 'trackr'
-import EJSON from 'ejson'
+import EJSON from "@webantic/ejson";
 import _ from 'underscore'
 
 import Data from './Data'
