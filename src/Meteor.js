@@ -71,6 +71,9 @@ module.exports = {
   },
   on(event, cb) {
     if (event === 'ddp') {
+      if (this.ddp) {
+        cb(this.ddp)
+      }
       ddpReadyCallbacks.push(cb)
     }
   },
