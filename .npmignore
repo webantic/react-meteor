@@ -1,0 +1,11 @@
+src
+test
+yarn.lock
+README.md
+.babelrc
+.DS_Store
+.travis.yml
+.git
+.gitignore
+.gitattributes
+*.tgz
