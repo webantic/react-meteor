@@ -19,7 +19,7 @@ export const absoluteUrl = (path) => {
 export const absoluteApiUrl = (path) => {
   const wsUrl = Data.ddp.socket.endpoint
 
-  return wsUrl.replace('ws:', window.location.protocol).replace('/websocket', '') + path
+  return wsUrl.replace(/wss?:/, window.location.protocol).replace('/websocket', '') + path
 }
 
 // Encode URL paramaters into a query string, handling nested objects and
